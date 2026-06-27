@@ -1532,6 +1532,14 @@
             <span></span>
         </div>
     </nav>
+    <input id="email" placeholder="email">
+<input id="password" type="password" placeholder="password">
+
+<button onclick="register(email.value, password.value)">Register</button>
+<button onclick="login(email.value, password.value)">Login</button>
+
+<button onclick="googleLogin()">Login with Google</button>
+<button onclick="logout()">Logout</button>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -2378,7 +2386,8 @@
     <script type="module" src="firebase.js"></script>
     <script type="module" src="register.js"></script>
     <script type="module" src="login.js"></script>
-    <script type="module" src="user.js"></script>
-
+    <script type="module" src="googlelogin.js"></script>
+    <script type="module" src="logout.js"></script>
+    <script type="module" src="loginstatus.js"></script>
 </body>
 </html>
