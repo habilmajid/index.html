@@ -1425,6 +1425,150 @@
         }
 
         /* ============================================
+           What's New Modal Styles
+           ============================================ */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-overlay.visible .modal-container {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-container {
+            background: rgba(18, 18, 26, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--gradient-primary);
+            border-color: var(--primary-color);
+            color: var(--dark-bg);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .modal-content {
+            margin-bottom: 30px;
+        }
+
+        .updates-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .updates-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+        }
+
+        .updates-list li:last-child {
+            border-bottom: none;
+        }
+
+        .updates-list li::before {
+            content: "✓";
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .modal-footer {
+            text-align: center;
+        }
+
+        .btn-explore {
+            background: var(--gradient-primary);
+            color: var(--dark-bg);
+            border: none;
+            padding: 14px 30px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .btn-explore:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.4);
+        }
+
+        /* ============================================
            RESPONSIVE DESIGN
            ============================================ */
         @media (max-width: 1024px) {
@@ -1552,6 +1696,20 @@
                 right: 20px;
                 width: 45px;
                 height: 45px;
+            }
+            
+            /* Responsive adjustments for modal */
+            .modal-container {
+                padding: 25px 20px;
+                width: 95%;
+            }
+            
+            .modal-title {
+                font-size: 24px;
+            }
+            
+            .updates-list li {
+                font-size: 14px;
             }
         }
 
@@ -2149,6 +2307,29 @@
         <i class="fas fa-arrow-up"></i>
     </a>
 
+    <!-- What's New Modal -->
+    <div class="modal-overlay" id="updateModal">
+        <div class="modal-container">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">🎉 What's New</h2>
+                <p class="modal-subtitle">Portfolio Updated</p>
+            </div>
+            <div class="modal-content">
+                <ul class="updates-list">
+                    <li>New Hero Image</li>
+                    <li>Improved Projects Section</li>
+                    <li>Better Footer Design</li>
+                    <li>Performance Improvements</li>
+                    <li>Bug Fixes</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-explore" id="exploreBtn">Explore Updates</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ============================================
         // HABIL MAJID DIGITAL SOLUTIONS - JAVASCRIPT
@@ -2451,6 +2632,46 @@
                     top: 0,
                     behavior: 'smooth'
                 });
+            });
+            
+            // What's New Modal Script
+            const modal = document.getElementById('updateModal');
+            const closeModal = document.getElementById('closeModal');
+            const exploreBtn = document.getElementById('exploreBtn');
+            const currentVersion = "1.0.0"; // Update this when you want to show the modal again
+            
+            // Check localStorage for version
+            const lastVersion = localStorage.getItem('siteUpdateVersion');
+            
+            // Show modal if it's a new version or first visit
+            if (lastVersion !== currentVersion) {
+                setTimeout(() => {
+                    modal.classList.add('visible');
+                }, 1000);
+            }
+            
+            // Close modal functions
+            function hideModal() {
+                modal.classList.remove('visible');
+                localStorage.setItem('siteUpdateVersion', currentVersion);
+            }
+            
+            // Event listeners
+            closeModal.addEventListener('click', hideModal);
+            exploreBtn.addEventListener('click', hideModal);
+            
+            // Close when clicking outside modal
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    hideModal();
+                }
+            });
+            
+            // Close with ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('visible')) {
+                    hideModal();
+                }
             });
         });
         
