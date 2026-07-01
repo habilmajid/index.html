@@ -449,35 +449,27 @@
         }
 
         /* ============================================
-           LIVE CLOCK WIDGET (NEW)
+           LIVE DATE & TIME WIDGET (NEW)
            ============================================ */
-        .live-clock {
-            position: absolute;
-            top: 100px; /* Moved down from 30px to 100px */
-            right: 30px;
+        .live-date-time {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 25px;
             background: rgba(10, 10, 15, 0.3);
             backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
-            border-radius: 15px;
-            padding: 15px 20px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            z-index: 10;
-            animation: fadeIn 1s ease;
-            transition: var(--transition);
-        }
-
-        .live-clock:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 240, 255, 0.2);
+            border-radius: 50px;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease forwards;
         }
 
         .time-display {
             font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
             color: var(--primary-color);
-            margin-bottom: 5px;
             letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
         }
@@ -489,26 +481,20 @@
         }
 
         .day-display {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-primary);
             font-weight: 600;
-            margin-bottom: 3px;
         }
 
         /* Animation for time updates */
         .time-update {
-            animation: updateTime 0.5s ease;
+            animation: updateTime 0.3s ease;
         }
 
         @keyframes updateTime {
-            0% { opacity: 0.5; transform: scale(0.95); }
-            50% { opacity: 1; transform: scale(1.05); }
+            0% { opacity: 0.7; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1.02); }
             100% { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ============================================
@@ -1776,15 +1762,13 @@
                 font-size: 14px;
             }
             
-            /* Responsive adjustments for clock */
-            .live-clock {
-                top: 80px; /* Adjusted for mobile */
-                right: 20px;
-                padding: 12px 15px;
+            /* Responsive adjustments for date/time widget */
+            .live-date-time {
+                padding: 10px 20px;
             }
             
             .time-display {
-                font-size: 20px;
+                font-size: 18px;
             }
             
             .day-display {
@@ -1851,21 +1835,15 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <!-- Live Clock Widget -->
-        <div class="live-clock">
-            <div class="time-display" id="timeDisplay">00:00:00 AM</div>
-            <div class="day-display" id="dayDisplay">Monday</div>
-            <div class="date-display" id="dateDisplay">01 January 2024</div>
-        </div>
-        
         <div class="hero-shapes">
             <div class="shape shape-1"></div>
             <div class="shape shape-2"></div>
         </div>
         <div class="hero-content">
-            <div class="hero-badge">
-                <span></span>
-                <p>Student, Web Developer and Technology Enthusiast</p>
+            <div class="live-date-time">
+                <div class="time-display" id="timeDisplay">00:00:00</div>
+                <div class="day-display" id="dayDisplay">Monday</div>
+                <div class="date-display" id="dateDisplay">01 January 2024</div>
             </div>
             <h1>Hello, I’m <span class="highlight">Habil Majid</span></h1>
             <p>Building modern websites, responsive experiences, and digital solutions from Zanzibar, Tanzania.</p>
@@ -2426,22 +2404,16 @@
         // ============================================
 
         // ============================================
-        // LIVE CLOCK FUNCTIONALITY (NEW)
+        // LIVE DATE & TIME FUNCTIONALITY (NEW)
         // ============================================
-        function updateClock() {
+        function updateDateTime() {
             const now = new Date();
             
-            // Format time (HH:MM:SS AM/PM)
-            let hours = now.getHours();
+            // Format time (HH:MM:SS)
+            const hours = now.getHours().toString().padStart(2, '0');
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const seconds = now.getSeconds().toString().padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            
-            hours = hours % 12;
-            hours = hours ? hours : 12; // Convert 0 to 12
-            hours = hours.toString().padStart(2, '0');
-            
-            const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+            const timeString = `${hours}:${minutes}:${seconds}`;
             
             // Format day
             const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -2477,13 +2449,13 @@
                 timeDisplay.classList.remove('time-update');
                 dayDisplay.classList.remove('time-update');
                 dateDisplay.classList.remove('time-update');
-            }, 500);
+            }, 300);
         }
 
-        // Initialize and update clock every second
+        // Initialize and update date/time every second
         document.addEventListener('DOMContentLoaded', function() {
-            updateClock(); // Initial update
-            setInterval(updateClock, 1000); // Update every second
+            updateDateTime(); // Initial update
+            setInterval(updateDateTime, 1000); // Update every second
 
             // ============================================
             // PARTICLE ANIMATION
